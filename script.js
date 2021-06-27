@@ -4,6 +4,7 @@
 
 const score0E = document.querySelector('#score--0');
 const score1E = document.querySelector('#score--1');
+
 const current0E = document.getElementById('current--0');
 const corrent1E = document.getElementById('current--1');
 const diceE = document.querySelector('.dice');
@@ -21,6 +22,16 @@ diceE.classList.add('hidden');
 
 let currentScore = 0;
 let activePlayer = 0;
+const score = [0, 0];
+
+
+const switchPlayer = function () {
+    currentScore = 0;
+    document.getElementById(`current--${activePlayer}`).textContent = 0;
+    activePlayer = Number(activePlayer) ? 0 : 1;
+    player0E.classList.toggle('player--active');
+    player1E.classList.toggle('player--active');
+}
 
 //When roll is cliceked
 btnRoll.addEventListener('click', function () {
@@ -41,14 +52,28 @@ btnRoll.addEventListener('click', function () {
 
     } else {
         //switch to next player
-        currentScore = 0;
-        document.getElementById(`current--${activePlayer}`).textContent = 0;
-        activePlayer = Number(activePlayer) ? 0 : 1;
-        // console.log('Active player' + activePlayer);
-        player0E.classList.toggle('player--active');
-        player1E.classList.toggle('player--active');
-
+        switchPlayer();
     }
 
 
+});
+
+btnHold.addEventListener('click', function () {
+    //Ading Active Player score
+    score[activePlayer] += currentScore;
+    document.getElementById(`score--${activePlayer}`).textContent = score[activePlayer];
+
+    //Check if the Player's Score is > 100
+    //Finish the game if its Score > 100
+
+    console.log(activePlayer);
+    if (score[activePlayer] > 100) {
+        document.querySelector(`.player--${activePlayer}`).classList.add('player--winner');
+        document.querySelector(`.player--${activePlayer}`).classList.remove('player--active');
+    } else {
+        switchPlayer();
+    }
+
+
+    //If Score < 100 switch to next player
 });
